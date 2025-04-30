@@ -6,6 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.database import db
 from mangum import Mangum
 
+import os
+
 logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s",
@@ -19,6 +21,11 @@ app = FastAPI(
     docs_url="/"
 ) 
 
+
+# 環境変数からオリジンをカンマ区切りで読み込み
+origins_env = os.getenv("ALLOWED_ORIGINS", "")
+allow_origins = [origin.strip() for origin in origins_env.split(",") if origin.strip()]
+print(allow_origins)
 
 # CORS設定 to cominucate with Reqct
 app.add_middleware(
