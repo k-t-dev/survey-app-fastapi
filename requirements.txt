@@ -1,0 +1,15 @@
+# fastapi==0.99.0
+# numpy
+# uvicorn==0.15.0
+# sqlalchemy==1.4.27
+# pandas
+# psycopg2-binary
+# mangum
+
+fastapi
+uvicorn
+pydantic
+mangum
+asyncpg
+pandas
+python-multipart

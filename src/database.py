@@ -8,18 +8,18 @@ class Database:
         
         #AWS
         # Prod
-        self.postgres_user = "root"
-        self.postgres_host = "postgresforlambda.cnkc4u0qycdj.ap-northeast-1.rds.amazonaws.com"
-        self.postgres_password = "jwe54iHUhewiN!dedc"
+        self.postgres_user = "postgres"
+        self.postgres_host = "survey-app-db.cnkc4u0qycdj.ap-northeast-1.rds.amazonaws.com"
+        self.postgres_password = "cynwyz-mowPu8-wefbuq"
         self.postgres_db = "postgres"
         self.postgres_port ="5432"
         
         #Local
-        self.postgres_user = "myuser"
-        self.postgres_password = "mypassword"
-        self.postgres_host = "localhost"
-        self.postgres_port = "5432"
-        self.postgres_db = "mydatabase"
+        # self.postgres_user = "myuser"
+        # self.postgres_password = "mypassword"
+        # self.postgres_host = "localhost"
+        # self.postgres_port = "5432"
+        # self.postgres_db = "mydatabase"
         
 
     async def connect(self):

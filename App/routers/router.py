@@ -1,5 +1,4 @@
 from fastapi import HTTPException, status
-from fastapi import APIRouter
 from src import crud
 from src import data_processing
 from App.routers import schemas
@@ -7,38 +6,31 @@ import pandas as pd
 from uuid import UUID
 import time
 from datetime import datetime
-
-from src.logger_config import logger
+from fastapi import APIRouter
+from typing import List
+from fastapi.middleware.cors import CORSMiddleware
 
 router = APIRouter()
 
-## TODO ##
-"""
-1 Create Endpoint 
-2 Update UI for Graph
-3 Apply those endpint to UI
-4 Test in the Local
-5 Get DNS 
-6 Conider where is the アンケート running. (Lamda? Amplify? )
-7 UI is run in the Amplify
 
-*Consider UI
-"""
+@router.get("/")
+def read_root():
+    return {"message": "Survey-API Start!!"}
 
 #GET
-@router.get("/companies", response_model=list[schemas.CompanyBase], summary="Get all companies")
+@router.get("/companies", response_model=List[schemas.CompanyBase], summary="Get all companies")
 async def get_companies():
     """Retrieve a list of all registered companies."""
     companies = await crud.get_company()  # Ensure async call
     return companies
 
-@router.get("/shops", response_model=list[schemas.ShopBase], summary="Get all shops")
+@router.get("/shops", response_model=List[schemas.ShopBase], summary="Get all shops")
 async def get_shops():
     """Retrieve a list of all registered shops."""
     shops = await crud.get_shop()  # Async call
     return shops
 
-@router.get("/survey/{company_id}/{shop_id}", response_model=list[schemas.SurveyBase])
+@router.get("/survey/{company_id}/{shop_id}", response_model=List[schemas.SurveyBase])
 async def get_latest_survey(shop_id: str, company_id:str):
     """Retrieve the latest survey for a specific shop."""
     print("GET survey company_id",company_id)
@@ -46,7 +38,7 @@ async def get_latest_survey(shop_id: str, company_id:str):
     survey = await crud.get_latest_survey(shop_id, company_id)  # Async call
     return survey
 
-@router.get("/survey-results/{company_id}/{shop_id}", response_model=list[schemas.SurveyResult])
+@router.get("/survey-results/{company_id}/{shop_id}", response_model=List[schemas.SurveyResult])
 async def get_survey_results(company_id:str, shop_id: str):
     """Retrieve the survey results for a specific shop."""
     print(f"GET SURVEY RESULT:{company_id}, {shop_id}")
@@ -85,7 +77,7 @@ async def create_survey(new_survey: schemas.SurveyCreate):
     now = datetime.now()
     final_new_survey_df = await data_processing.devide_survey_data(new_survey, question_defs_df, answer_defs_df, google_link_defs_df, now)
     return await crud.create_survey(final_new_survey_df)
-
+ 
 @router.post("/survey-results/general", response_model=schemas.Survey, summary="Add survey results")
 async def create_survey_results(survey_result: schemas.NewSurveyResult):
     """Add survey results to the database."""
@@ -124,7 +116,7 @@ async def update_company(company_id: UUID, shop_id: UUID, shop: schemas.ShopBase
     return updated_company
 
 
-#Change company status
+#Change Company status (temp delete)
 @router.put("/company/temp_status_changes/{company_id}/{contract}", response_model=schemas.BasicResponse, summary="Edit an existing company")
 async def update_company(company_id: UUID, contract:str ):
     """Edit company details in the database."""
@@ -134,7 +126,7 @@ async def update_company(company_id: UUID, contract:str ):
     return updated_company
 
 
-#Change company status
+#Change Shop Status (temp delete)
 @router.put("/shop/temp_status_changes/{company_id}/{shop_id}/{contract}", response_model=schemas.Response, summary="Edit an existing company")
 async def update_company(company_id: UUID, shop_id:UUID, contract:str ):
     """Edit company details in the database."""
@@ -142,6 +134,7 @@ async def update_company(company_id: UUID, shop_id:UUID, contract:str ):
     now = datetime.now()
     updated_company = await crud.update_shop_status(company_id, shop_id, contract, now)
     return updated_company
+
 
 
 ########################################################################################################################
@@ -170,7 +163,6 @@ def delete_shop(shop_id: UUID, company_id:UUID):
         )
     return shop
 ####################################################################
-
 
 
 """

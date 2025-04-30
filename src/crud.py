@@ -394,7 +394,8 @@ async def create_survey_comment_result(final_new_survey_result_df):
         
 async def create_survey_link(company_id, shop_id, now):
     
-    survey_link = f'https://review.com/survey/{company_id}/{shop_id}'
+    #Registed Domain
+    survey_link = f'https://survey.upreapp.com/survey/{company_id}/{shop_id}'
     conn = await db.get_connection()
 
     query = """

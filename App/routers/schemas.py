@@ -23,7 +23,7 @@ class ShopBase(BaseModel):
     shop_location: Optional[str] = None
     start_contract_date: date = None
     end_contract_date: date = None
-    shop_registered_time:date = None
+    shop_registered_time: datetime = None
     in_charge: Optional[str] = None
     remarks: Optional[str] = None
     company_name: Optional[str] = None
