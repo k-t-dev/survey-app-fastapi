@@ -25,7 +25,9 @@ app = FastAPI(
 # 環境変数からオリジンをカンマ区切りで読み込み
 origins_env = os.getenv("ALLOWED_ORIGINS", "")
 allow_origins = [origin.strip() for origin in origins_env.split(",") if origin.strip()]
+print("!!!!!!!!!!!!")
 print(allow_origins)
+print("!!!!!!!!!!!!")
 
 # CORS設定 to cominucate with Reqct
 app.add_middleware(
